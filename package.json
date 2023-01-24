@@ -1,5 +1,5 @@
 {
-  "name": "@webscopeio/react-textarea-autocomplete",
+  "name": "@imposium-hub/react-textarea-autocomplete",
   "version": "4.9.2",
   "description": "Offers autocomplete over textarea in style of GitHub.",
   "repository": {
