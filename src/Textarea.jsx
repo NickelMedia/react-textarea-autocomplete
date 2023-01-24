@@ -225,6 +225,8 @@ class ReactTextareaAutocomplete extends React.Component<
     scrollToItem: true,
     textAreaComponent: "textarea",
     renderToBody: false,
+    tabOrEnter: false
+    
   };
 
   constructor(props: TextareaProps) {
@@ -324,18 +326,6 @@ class ReactTextareaAutocomplete extends React.Component<
       selectionStart: this.textareaRef.selectionStart,
       selectionEnd: this.textareaRef.selectionEnd,
     };
-  };
-
-  getSelectedText = (): ?string => {
-    if (!this.textareaRef) return null;
-    const { selectionStart, selectionEnd } = this.textareaRef;
-
-    if (selectionStart === selectionEnd) return null;
-
-    return this.state.value.substr(
-      selectionStart,
-      selectionEnd - selectionStart
-    );
   };
 
   setCaretPosition = (position: number = 0) => {
@@ -712,6 +702,7 @@ class ReactTextareaAutocomplete extends React.Component<
       "movePopupAsYouType",
       "textAreaComponent",
       "renderToBody",
+      "tabOrEnter",
       "onItemSelected",
       "onItemHighlighted",
     ];
@@ -1053,6 +1044,7 @@ class ReactTextareaAutocomplete extends React.Component<
       loaderClassName,
       textAreaComponent,
       renderToBody,
+      tabOrEnter
     } = this.props;
     const {
       left,
@@ -1124,6 +1116,7 @@ class ReactTextareaAutocomplete extends React.Component<
                 onItemHighlighted={this._onItemHighlightedHandler}
                 onSelect={this._onSelect}
                 dropdownScroll={this._dropdownScroll}
+                isOnEnter={tabOrEnter}
               />
             )}
             {dataLoading && (
@@ -1235,6 +1228,7 @@ ReactTextareaAutocomplete.propTypes = {
   renderToBody: PropTypes.bool,
   onItemSelected: PropTypes.func,
   onItemHighlighted: PropTypes.func,
+  tabOrEnter: PropTypes.bool
 };
 
 export default ReactTextareaAutocomplete;

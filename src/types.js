@@ -38,14 +38,16 @@ export type ListProps = {
   itemClassName: ?string,
   onItemHighlighted: (Object | string ) => void,
   onSelect: (Object | string) => void,
-  dropdownScroll: HTMLDivElement => void
+  dropdownScroll: HTMLDivElement => void,
+  isOnEnter: ?boolean
 };
 
 /**
  * List Types
  */
 export type ListState = {
-  selectedItem: ?Object | ?string
+  selectedItem: ?Object | ?string,
+  isMounted: ?boolean
 };
 
 /**
@@ -98,7 +100,8 @@ export type TextareaProps = {
   itemClassName: ?string,
   loaderClassName: ?string,
   dropdownClassName: ?string,
-  renderToBody: ?boolean
+  renderToBody: ?boolean,
+  tabOrEnter: ?boolean,
 };
 
 export type TextareaState = {
