@@ -119,16 +119,14 @@ export default class List extends React.Component<ListProps, ListState> {
   };
 
   selectItem = (item: Object | string, keyboard: boolean = false) => {
-    const { onItemHighlighted, isOnEnter } = this.props;
+    const { onItemHighlighted } = this.props;
 
     if (this.state.selectedItem === item) return;
-
     this.setState({ selectedItem: item }, () => {
       onItemHighlighted(item);
 
       if (keyboard) {
         this.props.dropdownScroll(this.itemsRef[this.getId(item)]);
-        isOnEnter ? null : this.modifyText(item);
       }
     });
   };
@@ -136,7 +134,7 @@ export default class List extends React.Component<ListProps, ListState> {
   scroll = (e: KeyboardEvent) => {
     e.preventDefault();
 
-    const { values, isOnEnter } = this.props;
+    const { values } = this.props;
     const { isMounted } = this.state;
     const code = e.keyCode || e.which;
 
@@ -155,7 +153,7 @@ export default class List extends React.Component<ListProps, ListState> {
         break;
     }
 
-    if(!isMounted && isOnEnter){
+    if(!isMounted){
       newPosition = 0;
       this.setState({isMounted: !isMounted})
     } else {

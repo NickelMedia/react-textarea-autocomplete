@@ -715,7 +715,7 @@ class ReactTextareaAutocomplete extends React.Component<
     return props;
   };
 
-  _changeHandler = (e?: SyntheticInputEvent<*>) => {
+  _changeHandler = (e?: SyntheticInputEvent<*>, char?) => {
     const {
       trigger,
       onChange,
@@ -734,6 +734,9 @@ class ReactTextareaAutocomplete extends React.Component<
 
     const textarea = event.target || this.textareaRef; // fallback to support Shadow DOM
     const { selectionEnd } = textarea;
+    if(char){
+      textarea.value = char;
+    }
     const value = textarea.value;
     this.lastValueBubbledEvent = value;
 
@@ -754,7 +757,8 @@ class ReactTextareaAutocomplete extends React.Component<
       const caretPosition = this.getCaretPosition();
       onCaretPositionChange(caretPosition);
     }
-
+    console.log('_changeHandler')
+    console.log(value)
     this.setState({
       value,
     });
@@ -814,7 +818,7 @@ class ReactTextareaAutocomplete extends React.Component<
         !trigger[this.state.currentTrigger].allowWhitespace) ||
         !this.state.currentTrigger)
     ) {
-      this._closeAutocomplete();
+      this.props.isOnEnter ? this._closeAutocomplete() : null;
       return;
     }
 
@@ -965,10 +969,18 @@ class ReactTextareaAutocomplete extends React.Component<
   };
 
   _onItemHighlightedHandler = (item: Object | string | null) => {
-    const { onItemHighlighted } = this.props;
+    console.log('_onItemHighlightedHandler')
+    const { onItemHighlighted, tabOrEnter } = this.props;
     const { currentTrigger } = this.state;
     if (onItemHighlighted) {
       if (typeof onItemHighlighted === "function") {
+        if(!tabOrEnter){
+          console.log('tabOrEnter')
+          if (item){
+            this._changeHandler(null, item.name)
+          }
+          
+        }
         onItemHighlighted({ currentTrigger, item });
       } else {
         throw new Error("`onItemHighlighted` has to be a function");

@@ -283,7 +283,6 @@ class App extends React.Component {
           value={text}
           onChange={this._onChangeHandle}
           renderToBody={renderToBody}
-          tabOrEnter={true}
           trigger={{
             ":": {
               dataProvider: token =>
