@@ -4,7 +4,7 @@
   "description": "Offers autocomplete over textarea in style of GitHub.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/webscopeio/react-textarea-autocomplete"
+    "url": "https://github.com/NickelMedia/react-textarea-autocomplete"
   },
   "files": [
     "dist",
@@ -17,9 +17,9 @@
   "author": "Jakub Benes <jukben@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webscopeio/react-textarea-autocomplete/issues"
+    "url": "https://github.com/NickelMedia/react-textarea-autocomplete/issues"
   },
-  "homepage": "https://github.com/webscopeio/react-textarea-autocomplete",
+  "homepage": "https://github.com/NickelMedia/react-textarea-autocomplete",
   "keywords": [
     "react-component",
     "textarea",
