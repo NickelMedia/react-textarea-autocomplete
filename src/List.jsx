@@ -20,8 +20,8 @@ export default class List extends React.Component<ListProps, ListState> {
       Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter)
     );
 
-    const { values } = this.props;
-    if (values && values[0]) this.selectItem(values[0]);
+    const { values, isOnEnter } = this.props;
+    if (values && values[0] && isOnEnter) this.selectItem(values[0]);
   }
 
   componentDidUpdate({ values: oldValues }: ListProps) {
@@ -49,8 +49,7 @@ export default class List extends React.Component<ListProps, ListState> {
 
     const { values } = this.props;
 
-    this.modifyText(values[this.getPositionInList()]);
-    this.props.onPressEnter();
+    this.props.isOnEnter ? this.modifyText(values[this.getPositionInList()]) : this.props.onPressEnter() ;
   };
 
   getPositionInList = () => {
@@ -135,7 +134,7 @@ export default class List extends React.Component<ListProps, ListState> {
     e.preventDefault();
 
     const { values } = this.props;
-    const { isMounted } = this.state;
+    const { isMounted, isOnEnter } = this.state;
     const code = e.keyCode || e.which;
 
     const oldPosition = this.getPositionInList();
@@ -153,7 +152,7 @@ export default class List extends React.Component<ListProps, ListState> {
         break;
     }
 
-    if(!isMounted){
+    if(!isMounted && !isOnEnter){
       newPosition = 0;
       this.setState({isMounted: !isMounted})
     } else {
@@ -169,6 +168,7 @@ export default class List extends React.Component<ListProps, ListState> {
 
   isSelected = (item: Object | string): boolean => {
     const { selectedItem } = this.state;
+
     if (!selectedItem) return false;
 
     return this.getId(selectedItem) === this.getId(item);

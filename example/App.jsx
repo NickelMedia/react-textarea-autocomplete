@@ -146,113 +146,34 @@ class App extends React.Component {
       { name: "someProperty"}
     ];
 
+    const chars = [];
+    const varsData = [];
+    const trigger = {};
+
+    data.map((tag) => {
+      chars.push(tag.name[0].toLowerCase());
+      const obj = {
+          name: `${tag.name}`
+      };
+      varsData.push(obj);
+  });
+
+  const uniqueChars = [...new Set(chars)];
+
+    for (const char of uniqueChars) {
+        trigger[char] = {
+            dataProvider: () => {
+                const filtered = varsData.filter((f) =>
+                    f.name.toLowerCase().startsWith(`${char}`)
+                );
+                return filtered;
+            },
+            component: Item,
+            output: (tag) => `${tag.name}`
+        };
+            }
     return (
       <div>
-        <div>
-          <input
-            data-test="caretStart"
-            name="caret"
-            value="start"
-            type="radio"
-            checked={this.state.optionsCaret === "start"}
-            onChange={this._handleOptionsCaretStart}
-          />
-          <label htmlFor="caretStart">Place caret before word</label>
-
-          <input
-            data-test="caretEnd"
-            name="caret"
-            value="end"
-            type="radio"
-            checked={this.state.optionsCaret === "end"}
-            onChange={this._handleOptionsCaretEnd}
-          />
-          <label htmlFor="caretEnd">Place caret after word</label>
-
-          <input
-            data-test="caretNext"
-            name="caret"
-            value="next"
-            type="radio"
-            checked={this.state.optionsCaret === "next"}
-            onChange={this._handleOptionsCaretNext}
-          />
-          <label htmlFor="caretNext">Place caret after word with a space</label>
-        </div>
-        <div>
-          <label>
-            <input
-              data-test="showSecondTextarea"
-              type="checkbox"
-              defaultChecked={showSecondTextarea}
-              onChange={this._handleShowSecondTextarea}
-            />
-            Show second textarea
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              data-test="movePopupAsYouType"
-              type="checkbox"
-              defaultChecked={movePopupAsYouType}
-              onChange={this._handleMovePopupAsYouType}
-            />
-            Move popup as you type
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              data-test="renderToBody"
-              type="checkbox"
-              defaultChecked={renderToBody}
-              onChange={this._handleRenderToBody}
-            />
-            Render autocomplete to body
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              data-test="minChar"
-              type="number"
-              value={minChar}
-              onChange={this._handleMinChar}
-            />
-            Minimal characters typed to trigger autocomplete
-          </label>
-        </div>
-        <div>
-          Actual caret position:{" "}
-          <span data-test="actualCaretPosition">{caretPosition}</span>
-        </div>
-        <button data-test="setCaretPosition" onClick={this._setCaretPosition}>
-          setCaretPosition(1);
-        </button>
-        <button data-test="getCaretPosition" onClick={this._getCaretPosition}>
-          getCaretPosition();
-        </button>
-        <button
-          data-test="getSelectionPosition"
-          onClick={this._getSelectionPosition}
-        >
-          getSelectionPosition();
-        </button>
-        <button data-test="getSelectedText" onClick={this._getSelectedText}>
-          getSelectedText();
-        </button>
-        <button data-test="focus" onClick={this._focus}>
-          Focus the textarea
-        </button>
-        <button data-test="changeValueTo" onClick={this._changeValueTo}>
-          Change value to ":troph"
-        </button>
-        <button data-test="dummy">dummy</button>
-        <div>
-          Actual token in "[" provider:{" "}
-          <span data-test="actualToken">{actualTokenInProvider}</span>
-        </div>
         <ReactTextareaAutocomplete
           className="one"
           // onKeyDown={e => {
@@ -289,18 +210,8 @@ class App extends React.Component {
           onChange={this._onChangeHandle}
           // renderToBody={renderToBody}
           textAreaComponent='input'
-          tabOrEnter={true}
-          trigger={{
-            ":": {
-              dataProvider: () => [
-                { name: "ID" },
-                { name: "name" },
-                { name: "someProperty"}
-              ],
-              component: Item,
-              output: (value) => `${value.name}`
-            }
-          }}
+          // tabOrEnter={true}
+          trigger={trigger}
         />
       </div>
     );
