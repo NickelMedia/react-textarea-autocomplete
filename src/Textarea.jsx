@@ -425,7 +425,7 @@ class ReactTextareaAutocomplete extends React.Component<
       }
     };
 
-    let textToModify = textareaValue.slice(0, selectionEnd);
+    const textToModify = textareaValue.slice(0, selectionEnd);
 
     /**
      * It's important to escape the currentTrigger char for chars like [, (,...
@@ -452,11 +452,14 @@ class ReactTextareaAutocomplete extends React.Component<
     const modifiedText =
       textToModify.substring(0, startOfTokenPosition) + newTokenString;
 
-    if(!tabOrEnter){
-      textToModify = modifiedText;
-    }
+    // if(!tabOrEnter){
+    //   textToModify = modifiedText;
+    // }
   
-    const newValue = textareaValue.replace(textToModify, modifiedText);
+    let newValue = textareaValue.replace(textToModify, modifiedText);
+    if(!tabOrEnter){
+      newValue = modifiedText
+    }
     // set the new textarea value and after that set the caret back to its position
     this.setState(
       {
@@ -719,7 +722,7 @@ class ReactTextareaAutocomplete extends React.Component<
     return props;
   };
 
-  _changeHandler = (e?: SyntheticInputEvent<*>, char?) => {
+  _changeHandler = (e?: SyntheticInputEvent<*>) => {
     const {
       trigger,
       onChange,
@@ -738,11 +741,9 @@ class ReactTextareaAutocomplete extends React.Component<
 
     const textarea = event.target || this.textareaRef; // fallback to support Shadow DOM
     const { selectionEnd } = textarea;
-    if(char){
-      textarea.value = char;
-    }
 
     const value = textarea.value;
+
     this.lastValueBubbledEvent = value;
 
     if (onChange && event) {
@@ -973,16 +974,10 @@ class ReactTextareaAutocomplete extends React.Component<
   };
 
   _onItemHighlightedHandler = (item: Object | string | null) => {
-    const { onItemHighlighted, tabOrEnter } = this.props;
+    const { onItemHighlighted } = this.props;
     const { currentTrigger } = this.state;
     if (onItemHighlighted) {
       if (typeof onItemHighlighted === "function") {
-        if(!tabOrEnter){
-          if (item){
-            this._changeHandler(null, item.name)
-          }
-          
-        }
         onItemHighlighted({ currentTrigger, item });
       } else {
         throw new Error("`onItemHighlighted` has to be a function");

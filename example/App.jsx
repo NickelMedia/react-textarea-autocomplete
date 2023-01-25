@@ -140,6 +140,11 @@ class App extends React.Component {
       minChar,
       renderToBody
     } = this.state;
+    const data = [
+      { name: "ID" },
+      { name: "name" },
+      { name: "someProperty"}
+    ];
 
     return (
       <div>
@@ -250,15 +255,15 @@ class App extends React.Component {
         </div>
         <ReactTextareaAutocomplete
           className="one"
-          onKeyDown={e => {
-            console.log(`pressed "${e.key}"`);
-          }}
-          ref={ref => {
-            this.rtaRef = ref;
-          }}
-          innerRef={ref => {
-            this.textareaRef = ref;
-          }}
+          // onKeyDown={e => {
+          //   console.log(`pressed "${e.key}"`);
+          // }}
+          // ref={ref => {
+          //   this.rtaRef = ref;
+          // }}
+          // innerRef={ref => {
+          //   this.textareaRef = ref;
+          // }}
           loadingComponent={Loading}
           style={{
             padding: 5
@@ -269,24 +274,25 @@ class App extends React.Component {
             height: 100,
             margin: "20px auto"
           }}
-          movePopupAsYouType={movePopupAsYouType}
-          onCaretPositionChange={this._onCaretPositionChangeHandle}
-          onItemHighlighted={info => {
-            // save highlighted item to window; use it later in E2E tests
-            window.__lastHighlightedItem = info;
-          }}
-          onItemSelected={info => {
-            // save selected item to window; use it later in E2E tests
-            window.__lastSelectedItem = info;
-          }}
+          // movePopupAsYouType={movePopupAsYouType}
+          // onCaretPositionChange={this._onCaretPositionChangeHandle}
+          // onItemHighlighted={info => {
+          //   // save highlighted item to window; use it later in E2E tests
+          //   window.__lastHighlightedItem = info;
+          // }}
+          // onItemSelected={info => {
+          //   // save selected item to window; use it later in E2E tests
+          //   window.__lastSelectedItem = info;
+          // }}
           minChar={minChar}
           value={text}
           onChange={this._onChangeHandle}
-          renderToBody={renderToBody}
-          // tabOrEnter={true}
+          // renderToBody={renderToBody}
+          textAreaComponent='input'
+          tabOrEnter={true}
           trigger={{
             ":": {
-              dataProvider: token => [
+              dataProvider: () => [
                 { name: "ID" },
                 { name: "name" },
                 { name: "someProperty"}
