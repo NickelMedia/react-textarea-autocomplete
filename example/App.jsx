@@ -283,14 +283,14 @@ class App extends React.Component {
           value={text}
           onChange={this._onChangeHandle}
           renderToBody={renderToBody}
-          tabOrEnter={true}
+          // tabOrEnter={true}
           trigger={{
             ":": {
-              dataProvider: token =>
-                emoji(token)
-                  .slice(0, 10)
-                  .filter(({ char }) => char)
-                  .map(({ name, char }) => ({ name, char })),
+              dataProvider: token => [
+                { name: "ID" },
+                { name: "name" },
+                { name: "someProperty"}
+              ],
               component: Item,
               output: (value) => `${value.name}`
             }

@@ -47,10 +47,10 @@ export default class List extends React.Component<ListProps, ListState> {
       e.preventDefault();
     }
 
-    const { values, isOnEnter } = this.props;
+    const { values } = this.props;
 
     this.modifyText(values[this.getPositionInList()]);
-    isOnEnter ? null : this.props.onPressEnter();
+    this.props.onPressEnter();
   };
 
   getPositionInList = () => {
@@ -110,8 +110,7 @@ export default class List extends React.Component<ListProps, ListState> {
     if (!value) return;
 
     const { onSelect } = this.props;
-    console.log('modifyText')
-    console.log(value)
+
     onSelect(value);
   };
 

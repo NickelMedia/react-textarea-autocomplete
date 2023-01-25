@@ -425,7 +425,7 @@ class ReactTextareaAutocomplete extends React.Component<
       }
     };
 
-    const textToModify = textareaValue.slice(0, selectionEnd);
+    let textToModify = textareaValue.slice(0, selectionEnd);
 
     /**
      * It's important to escape the currentTrigger char for chars like [, (,...
@@ -452,7 +452,11 @@ class ReactTextareaAutocomplete extends React.Component<
     const modifiedText =
       textToModify.substring(0, startOfTokenPosition) + newTokenString;
 
-    const newValue = tabOrEnter ? textareaValue.replace(textToModify, modifiedText) : modifiedText;
+    if(!tabOrEnter){
+      textToModify = modifiedText;
+    }
+  
+    const newValue = textareaValue.replace(textToModify, modifiedText);
     // set the new textarea value and after that set the caret back to its position
     this.setState(
       {
@@ -759,8 +763,6 @@ class ReactTextareaAutocomplete extends React.Component<
       onCaretPositionChange(caretPosition);
     }
 
-    console.log('_onChangeHandler')
-    console.log(value)
     this.setState({
       value,
     });
