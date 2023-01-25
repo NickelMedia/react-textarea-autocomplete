@@ -376,7 +376,7 @@ class ReactTextareaAutocomplete extends React.Component<
 
   _onSelect = (item: Object | string) => {
     const { selectionEnd, currentTrigger, value: textareaValue } = this.state;
-    const { onItemSelected } = this.props;
+    const { onItemSelected, tabOrEnter } = this.props;
 
     if (!currentTrigger) return;
 
@@ -448,11 +448,11 @@ class ReactTextareaAutocomplete extends React.Component<
       newTokenString,
       startOfTokenPosition
     );
-
+    
     const modifiedText =
       textToModify.substring(0, startOfTokenPosition) + newTokenString;
 
-    const newValue = textareaValue.replace(textToModify, modifiedText);
+    const newValue = tabOrEnter ? textareaValue.replace(textToModify, modifiedText) : modifiedText;
     // set the new textarea value and after that set the caret back to its position
     this.setState(
       {
@@ -737,6 +737,7 @@ class ReactTextareaAutocomplete extends React.Component<
     if(char){
       textarea.value = char;
     }
+
     const value = textarea.value;
     this.lastValueBubbledEvent = value;
 
@@ -757,7 +758,8 @@ class ReactTextareaAutocomplete extends React.Component<
       const caretPosition = this.getCaretPosition();
       onCaretPositionChange(caretPosition);
     }
-    console.log('_changeHandler')
+
+    console.log('_onChangeHandler')
     console.log(value)
     this.setState({
       value,
@@ -883,9 +885,9 @@ class ReactTextareaAutocomplete extends React.Component<
     }
 
     this.escListenerInit();
-
+    
     const textToReplace = this._getTextToReplace(currentTrigger);
-
+    
     this.setState(
       {
         selectionEnd,
@@ -969,13 +971,11 @@ class ReactTextareaAutocomplete extends React.Component<
   };
 
   _onItemHighlightedHandler = (item: Object | string | null) => {
-    console.log('_onItemHighlightedHandler')
     const { onItemHighlighted, tabOrEnter } = this.props;
     const { currentTrigger } = this.state;
     if (onItemHighlighted) {
       if (typeof onItemHighlighted === "function") {
         if(!tabOrEnter){
-          console.log('tabOrEnter')
           if (item){
             this._changeHandler(null, item.name)
           }
@@ -1129,6 +1129,7 @@ class ReactTextareaAutocomplete extends React.Component<
                 onSelect={this._onSelect}
                 dropdownScroll={this._dropdownScroll}
                 isOnEnter={tabOrEnter}
+                onPressEnter={this._closeAutocomplete}
               />
             )}
             {dataLoading && (

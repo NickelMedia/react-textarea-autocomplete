@@ -12,8 +12,8 @@ type ItemProps = {
   }
 };
 
-const Item = ({ entity: { name, char } }: ItemProps) => (
-  <div>{`${name}: ${char}`}</div>
+const Item = ({ entity: { name } }: ItemProps) => (
+  <div>{`${name}`}</div>
 );
 
 type LoadingProps = {
@@ -283,6 +283,7 @@ class App extends React.Component {
           value={text}
           onChange={this._onChangeHandle}
           renderToBody={renderToBody}
+          tabOrEnter={true}
           trigger={{
             ":": {
               dataProvider: token =>
@@ -291,168 +292,10 @@ class App extends React.Component {
                   .filter(({ char }) => char)
                   .map(({ name, char }) => ({ name, char })),
               component: Item,
-              output: {
-                start: this._outputCaretStart,
-                end: this._outputCaretEnd,
-                next: this._outputCaretNext
-              }[optionsCaret]
-            },
-            "::": {
-              dataProvider: token => [{ name: "test", char: "test2" }],
-              component: Item,
-              output: {
-                start: this._outputCaretStart,
-                end: this._outputCaretEnd,
-                next: this._outputCaretNext
-              }[optionsCaret]
-            },
-            "@": {
-              dataProvider: token =>
-                new Promise(res =>
-                  setTimeout(() => {
-                    res([{ name: "jakub", char: "Jakub" }]);
-                  }, 1000)
-                ),
-              component: Item,
-              output: {
-                start: this._outputCaretStart,
-                end: this._outputCaretEnd,
-                next: this._outputCaretDefault
-              }[optionsCaret]
-            },
-            // test of special character
-            "[": {
-              dataProvider: token => {
-                /**
-                  Let's pass token to state to easily test it in Cypress 
-                  We going to test that we get also whitespace because this trigger has set "allowWhitespace"  
-                 */
-                this.setState({ actualTokenInProvider: token });
-                return [
-                  { name: "alt", char: "@" },
-                  { name: "another character", char: "/" }
-                ];
-              },
-              component: Item,
-              allowWhitespace: true,
-              output: {
-                start: this._outputCaretStart,
-                end: this._outputCaretEnd,
-                next: this._outputCaretNext
-              }[optionsCaret]
-            },
-            ";": {
-              dataProvider: token => [
-                { name: "1", char: "one" },
-                { name: "2", char: "two" }
-              ],
-              component: Item,
-              afterWhitespace: true,
-              output: {
-                start: this._outputCaretStart,
-                end: this._outputCaretEnd,
-                next: this._outputCaretNext
-              }[optionsCaret]
-            },
-            "/": {
-              dataProvider: token => [{ name: "1", char: "/kick" }],
-              component: Item,
-              output: this._outputCaretEnd
-            },
-            "/kick": {
-              dataProvider: token => [
-                { name: "1", char: "fred" },
-                { name: "2", char: "jeremy" }
-              ],
-              component: Item,
-              output: this._outputCaretEnd
-            },
-            "/filter": {
-              dataProvider: token => [
-                { name: "a", char: "amy" },
-                { name: "b", char: "ben" },
-                { name: "c", char: "cheryl" },
-                { name: "d", char: "daniel" },
-                { name: "e", char: "emily" }
-              ].filter(x => x.name == token.slice(6) || token.length === 6),
-              component: Item,
-              output: this._outputCaretEnd
-            },
-            "(": {
-              dataProvider: token => [
-                { name: "country", char: "country" },
-                { name: "person", char: "person" },
-                {
-                  name: "trigger",
-                  char: "trigger",
-                  // has to be defined because we are not gonna return nothing
-                  key: "trigger",
-                  // custom
-                  type: "trigger"
-                }
-              ],
-              component: Item,
-              output: (item, trigger) => {
-                if (item.type === "trigger") return null;
-                return {
-                  text: `${trigger}${item.name}`,
-                  caretPosition: "end"
-                };
-              }
-            },
-            ".": {
-              dataProvider: token => [
-                { name: "ID", char: "ID" },
-                { name: "name", char: "name" },
-                { name: "someProperty", char: "someProperty" }
-              ],
-              component: Item,
-              output: (item, trigger) => ({
-                text: `${trigger}${item.name}`,
-                caretPosition: "end"
-              })
-            },
-            "-": {
-              dataProvider: token => {
-                return [
-                  { name: "f", char: "-first" },
-                  { name: "s", char: "-second" }
-                ];
-              },
-              component: Item,
-              output: this._outputCaretEnd
-            },
+              output: (value) => `${value.name}`
+            }
           }}
         />
-        {!showSecondTextarea ? null : (
-          <ReactTextareaAutocomplete
-            style={{
-              padding: 5
-            }}
-            containerStyle={{
-              marginTop: 20,
-              width: 400,
-              height: 100,
-              margin: "20px auto"
-            }}
-            loadingComponent={Loading}
-            trigger={{
-              ":": {
-                dataProvider: token =>
-                  emoji(token)
-                    .slice(0, 10)
-                    .filter(({ char }) => char)
-                    .map(({ name, char }) => ({ name, char })),
-                component: Item,
-                output: {
-                  start: this._outputCaretStart,
-                  end: this._outputCaretEnd,
-                  next: this._outputCaretNext
-                }[optionsCaret]
-              }
-            }}
-          />
-        )}
       </div>
     );
   }

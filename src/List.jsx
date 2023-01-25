@@ -16,17 +16,12 @@ export default class List extends React.Component<ListProps, ListState> {
 
   componentDidMount() {
     this.listeners.push(
-      Listeners.add([KEY_CODES.DOWN, KEY_CODES.UP], this.scroll)
+      Listeners.add([KEY_CODES.DOWN, KEY_CODES.UP], this.scroll), 
+      Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter)
     );
 
-    if(this.props.isOnEnter){
-      this.listeners.push(
-        Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter)
-      );
-
-      const { values } = this.props;
-      if (values && values[0]) this.selectItem(values[0]);
-    }
+    const { values } = this.props;
+    if (values && values[0]) this.selectItem(values[0]);
   }
 
   componentDidUpdate({ values: oldValues }: ListProps) {
@@ -52,9 +47,10 @@ export default class List extends React.Component<ListProps, ListState> {
       e.preventDefault();
     }
 
-    const { values } = this.props;
+    const { values, isOnEnter } = this.props;
 
     this.modifyText(values[this.getPositionInList()]);
+    isOnEnter ? null : this.props.onPressEnter();
   };
 
   getPositionInList = () => {
@@ -114,7 +110,8 @@ export default class List extends React.Component<ListProps, ListState> {
     if (!value) return;
 
     const { onSelect } = this.props;
-
+    console.log('modifyText')
+    console.log(value)
     onSelect(value);
   };
 
