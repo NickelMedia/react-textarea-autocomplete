@@ -251,7 +251,13 @@ Run `yarn cypress:open` for open [Cypress][cypress] for E2E testing
 
 Run `yarn build` and `yarn link` then in your project folder (_you have to use the same version of React e.g 15.6.1_) `yarn link react-textarea-autocomplete` to link together.
 
+Ed's Note: I couldn't get `npm link` to work, i end up doing all my testing within the Dev Playground with `npm run dev`
+
 Your PR's are welcomed! ❤️
+
+### NPM Release
+
+Run `npm run release` to release new version to NPM.
 
 ## Contributors
 
