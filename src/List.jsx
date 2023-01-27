@@ -49,7 +49,12 @@ export default class List extends React.Component<ListProps, ListState> {
 
     const { values } = this.props;
 
-    this.props.isOnEnter ? this.modifyText(values[this.getPositionInList()]) : this.props.onPressEnter() ;
+    if(this.props.isOnEnter) {
+      this.modifyText(values[this.getPositionInList()]); 
+    } 
+    
+    this.props.onPressEnter();
+
   };
 
   getPositionInList = () => {

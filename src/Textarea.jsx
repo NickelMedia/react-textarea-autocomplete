@@ -452,14 +452,12 @@ class ReactTextareaAutocomplete extends React.Component<
     const modifiedText =
       textToModify.substring(0, startOfTokenPosition) + newTokenString;
 
-    // if(!tabOrEnter){
-    //   textToModify = modifiedText;
-    // }
-  
     let newValue = textareaValue.replace(textToModify, modifiedText);
+
     if(!tabOrEnter){
       newValue = modifiedText
     }
+
     // set the new textarea value and after that set the caret back to its position
     this.setState(
       {

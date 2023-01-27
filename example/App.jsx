@@ -161,7 +161,7 @@ class App extends React.Component {
   const uniqueChars = [...new Set(chars)];
 
     for (const char of uniqueChars) {
-        trigger[char] = {
+        trigger[':'] = {
             dataProvider: () => {
                 const filtered = varsData.filter((f) =>
                     f.name.toLowerCase().startsWith(`${char}`)
@@ -209,8 +209,7 @@ class App extends React.Component {
           value={text}
           onChange={this._onChangeHandle}
           // renderToBody={renderToBody}
-          textAreaComponent='input'
-          // tabOrEnter={true}
+          tabOrEnter={true}
           trigger={trigger}
         />
       </div>
