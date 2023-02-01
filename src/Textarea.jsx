@@ -375,7 +375,7 @@ class ReactTextareaAutocomplete extends React.Component<
   };
 
   _onSelect = (item: Object | string) => {
-    const { selectionEnd, currentTrigger, value: textareaValue } = this.state;
+    const { selectionEnd, currentTrigger, value } = this.state;
     const { onItemSelected, tabOrEnter } = this.props;
 
     if (!currentTrigger) return;
@@ -425,6 +425,8 @@ class ReactTextareaAutocomplete extends React.Component<
       }
     };
 
+    const textareaValue = value.replace(/{{2}$/, '{')
+
     const textToModify = textareaValue.slice(0, selectionEnd);
 
     /**
@@ -453,6 +455,10 @@ class ReactTextareaAutocomplete extends React.Component<
       textToModify.substring(0, startOfTokenPosition) + newTokenString;
 
     let newValue = textareaValue.replace(textToModify, modifiedText);
+
+    if(textToModify.match(/{{2}\w+$/)){
+      newValue = textToModify.replace(/{{2}\w+$/, newTokenString)
+    }
 
     if(!tabOrEnter){
       newValue = modifiedText

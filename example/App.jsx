@@ -162,7 +162,7 @@ class App extends React.Component {
 
     for (const char of uniqueChars) {
         trigger[':'] = {
-            dataProvider: () => {
+            dataProvider: (d) => {
                 const filtered = varsData.filter((f) =>
                     f.name.toLowerCase().startsWith(`${char}`)
                 );
@@ -210,7 +210,18 @@ class App extends React.Component {
           onChange={this._onChangeHandle}
           // renderToBody={renderToBody}
           tabOrEnter={true}
-          trigger={trigger}
+          trigger={{
+            '{': {
+              dataProvider: (d) => {
+                  const filtered = varsData.filter((f) =>
+                      f.name.toLowerCase().startsWith(d)
+                  );
+                  return filtered;
+              },
+              component: Item,
+              output: (tag) => `{{${tag.name}}}`
+          }
+          }}
         />
       </div>
     );
