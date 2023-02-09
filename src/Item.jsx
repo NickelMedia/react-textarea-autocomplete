@@ -22,7 +22,8 @@ export default class Item extends React.Component<ItemProps, *> {
 
   selectItem = () => {
     const { item, onSelectHandler } = this.props;
-    onSelectHandler(item);
+      onSelectHandler(item);
+    
   };
 
   render() {

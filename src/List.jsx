@@ -114,17 +114,15 @@ export default class List extends React.Component<ListProps, ListState> {
     if (!value) return;
 
     const { onSelect } = this.props;
-
     onSelect(value);
   };
 
   selectItem = (item: Object | string, keyboard: boolean = false) => {
     const { onItemHighlighted, isOnEnter } = this.props;
-
     if (this.state.selectedItem === item) return;
     this.setState({ selectedItem: item }, () => {
 
-      if(!isOnEnter){
+      if(!isOnEnter && keyboard){
         this.modifyText(item)
       }
       onItemHighlighted(item);

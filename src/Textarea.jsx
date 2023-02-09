@@ -286,6 +286,7 @@ class ReactTextareaAutocomplete extends React.Component<
 
   componentDidUpdate({ trigger: oldTrigger, value: oldValue }: TextareaProps) {
     const { trigger, value } = this.props;
+    
     if (Object.keys(trigger).join("") !== Object.keys(oldTrigger).join("")) {
       this._createRegExp();
     }
@@ -379,7 +380,6 @@ class ReactTextareaAutocomplete extends React.Component<
     const { onItemSelected, tabOrEnter } = this.props;
 
     if (!currentTrigger) return;
-
     const getTextToReplaceForCurrentTrigger = this._getTextToReplace(
       currentTrigger
     );
