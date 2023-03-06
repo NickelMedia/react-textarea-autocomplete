@@ -443,7 +443,7 @@ class ReactTextareaAutocomplete extends React.Component<
 
     // we add space after emoji is selected if a caret position is next
     const newTokenString =
-      newToken.caretPosition === "next" ? `${newToken.text} ` : newToken.text;
+      newToken.caretPosition === "next" ? `${newToken.text}` : newToken.text;
 
     const newCaretPosition = computeCaretPosition(
       newToken.caretPosition,
@@ -461,10 +461,11 @@ class ReactTextareaAutocomplete extends React.Component<
     }
 
     if(!tabOrEnter){
-      newValue = modifiedText.trimEnd()
+      newValue = modifiedText;
     }
 
     // set the new textarea value and after that set the caret back to its position
+
     this.setState(
       {
         value: newValue,
@@ -664,6 +665,7 @@ class ReactTextareaAutocomplete extends React.Component<
         .map((a) => escapeRegex(a))
         .join("|")})$`
     );
+
   };
 
   /**
@@ -733,6 +735,7 @@ class ReactTextareaAutocomplete extends React.Component<
       minChar,
       onCaretPositionChange,
       movePopupAsYouType,
+      tabOrEnter
     } = this.props;
     const { top, left } = this.state;
 
@@ -769,8 +772,8 @@ class ReactTextareaAutocomplete extends React.Component<
     }
 
     this.setState({
-      value,
-    });
+      value}
+      )
 
     const setTopLeft = () => {
       const { top: newTop, left: newLeft } = getCaretCoordinates(
@@ -793,13 +796,12 @@ class ReactTextareaAutocomplete extends React.Component<
     };
 
     if (selectionEnd <= this.lastTrigger) {
-      const affectedTextareaValue = value.slice(0, 1);
+      const affectedTextareaValue = value.slice(0, !tabOrEnter ? 1 : selectionEnd);
       const newTrigger = this.tokenRegExp.exec(affectedTextareaValue);
-  
       cleanLastTrigger(newTrigger ? newTrigger[0].length : 0);
     }
 
-    const affectedTextareaValue = value.slice(this.lastTrigger, 1);
+    const affectedTextareaValue = value.slice(this.lastTrigger, !tabOrEnter ? 1 : selectionEnd);
 
     let tokenMatch = this.tokenRegExp.exec(affectedTextareaValue);
     let lastToken = tokenMatch && tokenMatch[0];
@@ -809,7 +811,6 @@ class ReactTextareaAutocomplete extends React.Component<
 
     // with this approach we want to know if the user just inserted a new trigger sequence
     const newTrigger = this.tokenRegExpEnding.exec(affectedTextareaValue);
-
     if (newTrigger) {
 
       cleanLastTrigger(newTrigger[0].length);
@@ -821,6 +822,7 @@ class ReactTextareaAutocomplete extends React.Component<
      if we lost the trigger token or there is no following character we want to close
      the autocomplete
     */
+
     if (
       (!lastToken || lastToken.length <= minChar + currentTriggerLength) &&
       // check if our current trigger disallows whitespace
@@ -981,8 +983,10 @@ class ReactTextareaAutocomplete extends React.Component<
   _onItemHighlightedHandler = (item: Object | string | null) => {
     const { onItemHighlighted } = this.props;
     const { currentTrigger } = this.state;
+  
     if (onItemHighlighted) {
       if (typeof onItemHighlighted === "function") {
+        this.setState({value: item})
         onItemHighlighted({ currentTrigger, item });
       } else {
         throw new Error("`onItemHighlighted` has to be a function");
@@ -1058,7 +1062,6 @@ class ReactTextareaAutocomplete extends React.Component<
       loaderClassName,
       textAreaComponent,
       renderToBody,
-      tabOrEnter
     } = this.props;
     const {
       left,
@@ -1130,7 +1133,6 @@ class ReactTextareaAutocomplete extends React.Component<
                 onItemHighlighted={this._onItemHighlightedHandler}
                 onSelect={this._onSelect}
                 dropdownScroll={this._dropdownScroll}
-                isOnEnter={tabOrEnter}
                 onPressEnter={this._closeAutocomplete}
               />
             )}

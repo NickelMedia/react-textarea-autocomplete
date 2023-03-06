@@ -130,19 +130,11 @@ class App extends React.Component {
   };
 
   render() {
-    const {
-      // optionsCaret,
-      // caretPosition,
-      // movePopupAsYouType,
-      // actualTokenInProvider,
-      // showSecondTextarea,
-      text,
-      // minChar,
-      // renderToBody
-    } = this.state;
+    const { text } = this.state;
     const data = [
       { name: "id stuff" },
       { name: "idiots"},
+      { name: "idiots sticks"},
       { name: "importants stuff"},
       { name: "name plate" },
       { name: "some property"},
@@ -152,7 +144,7 @@ class App extends React.Component {
 
     const chars = [];
     const varsData = [];
-    const trigger = {};
+    const triggers = {};
 
     data.map((tag) => {
       chars.push(tag.name[0].toLowerCase());
@@ -161,14 +153,15 @@ class App extends React.Component {
       };
       varsData.push(obj);
   });
-  chars.push(text);
+
   const uniqueChars = [...new Set(chars)];
 
     for (const char of uniqueChars) {
-        trigger[char] = {
-            dataProvider: (d) => {
+        triggers[char] = {
+            dataProvider: () => {
+              const value = text !== '' && text.charAt(0) === char ? text : char;
                 const filtered = varsData.filter((f) =>
-                    f.name.toLowerCase().startsWith(`${char}`)
+                    f.name.toLowerCase().startsWith(`${value}`)
                 );
                 return filtered;
             },
@@ -176,19 +169,11 @@ class App extends React.Component {
             output: (tag) => `${tag.name}`
         };
             }
+
     return (
       <div>
         <ReactTextareaAutocomplete
           className="one"
-          // onKeyDown={e => {
-          //   console.log(`pressed "${e.key}"`);
-          // }}
-          // ref={ref => {
-          //   this.rtaRef = ref;
-          // }}
-          // innerRef={ref => {
-          //   this.textareaRef = ref;
-          // }}
           loadingComponent={Loading}
           style={{
             padding: 5
@@ -199,23 +184,11 @@ class App extends React.Component {
             height: 100,
             margin: "20px auto"
           }}
-          // movePopupAsYouType={movePopupAsYouType}
-          // onCaretPositionChange={this._onCaretPositionChangeHandle}
-          // onItemHighlighted={info => {
-          //   // save highlighted item to window; use it later in E2E tests
-          //   window.__lastHighlightedItem = info;
-          // }}
-          // onItemSelected={info => {
-          //   // save selected item to window; use it later in E2E tests
-          //   window.__lastSelectedItem = info;
-          // }}
           textAreaComponent='input'
           minChar={0}
           value={text}
           onChange={this._onChangeHandle}
-          // renderToBody={renderToBody}
-          // tabOrEnter={false}
-          trigger={trigger}
+           trigger={triggers}
         />
       </div>
     );
