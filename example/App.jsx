@@ -131,19 +131,23 @@ class App extends React.Component {
 
   render() {
     const {
-      optionsCaret,
-      caretPosition,
-      movePopupAsYouType,
-      actualTokenInProvider,
-      showSecondTextarea,
+      // optionsCaret,
+      // caretPosition,
+      // movePopupAsYouType,
+      // actualTokenInProvider,
+      // showSecondTextarea,
       text,
-      minChar,
-      renderToBody
+      // minChar,
+      // renderToBody
     } = this.state;
     const data = [
-      { name: "ID" },
-      { name: "name" },
-      { name: "someProperty"}
+      { name: "id stuff" },
+      { name: "idiots"},
+      { name: "importants stuff"},
+      { name: "name plate" },
+      { name: "some property"},
+      { name: "san fransico"},
+      { name: "property value"}
     ];
 
     const chars = [];
@@ -157,11 +161,11 @@ class App extends React.Component {
       };
       varsData.push(obj);
   });
-
+  chars.push(text);
   const uniqueChars = [...new Set(chars)];
 
     for (const char of uniqueChars) {
-        trigger[':'] = {
+        trigger[char] = {
             dataProvider: (d) => {
                 const filtered = varsData.filter((f) =>
                     f.name.toLowerCase().startsWith(`${char}`)
@@ -205,23 +209,13 @@ class App extends React.Component {
           //   // save selected item to window; use it later in E2E tests
           //   window.__lastSelectedItem = info;
           // }}
-          minChar={minChar}
+          textAreaComponent='input'
+          minChar={0}
           value={text}
           onChange={this._onChangeHandle}
           // renderToBody={renderToBody}
-          tabOrEnter={true}
-          trigger={{
-            '{': {
-              dataProvider: (d) => {
-                  const filtered = varsData.filter((f) =>
-                      f.name.toLowerCase().startsWith(d)
-                  );
-                  return filtered;
-              },
-              component: Item,
-              output: (tag) => `{{${tag.name}}}`
-          }
-          }}
+          // tabOrEnter={false}
+          trigger={trigger}
         />
       </div>
     );
