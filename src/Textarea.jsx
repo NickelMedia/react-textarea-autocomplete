@@ -461,7 +461,7 @@ class ReactTextareaAutocomplete extends React.Component<
     }
 
     if(!tabOrEnter){
-      newValue = modifiedText
+      newValue = modifiedText.trimEnd()
     }
 
     // set the new textarea value and after that set the caret back to its position
@@ -793,13 +793,13 @@ class ReactTextareaAutocomplete extends React.Component<
     };
 
     if (selectionEnd <= this.lastTrigger) {
-      const affectedTextareaValue = value.slice(0, selectionEnd);
+      const affectedTextareaValue = value.slice(0, 1);
       const newTrigger = this.tokenRegExp.exec(affectedTextareaValue);
-
+  
       cleanLastTrigger(newTrigger ? newTrigger[0].length : 0);
     }
 
-    const affectedTextareaValue = value.slice(this.lastTrigger, selectionEnd);
+    const affectedTextareaValue = value.slice(this.lastTrigger, 1);
 
     let tokenMatch = this.tokenRegExp.exec(affectedTextareaValue);
     let lastToken = tokenMatch && tokenMatch[0];
@@ -811,6 +811,7 @@ class ReactTextareaAutocomplete extends React.Component<
     const newTrigger = this.tokenRegExpEnding.exec(affectedTextareaValue);
 
     if (newTrigger) {
+
       cleanLastTrigger(newTrigger[0].length);
     } else if (!this._isAutocompleteOpen()) {
       this._closeAutocomplete();
