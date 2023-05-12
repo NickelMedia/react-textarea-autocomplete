@@ -377,7 +377,7 @@ class ReactTextareaAutocomplete extends React.Component<
 
   _onSelect = (item: Object | string) => {
     const { selectionEnd, currentTrigger, value } = this.state;
-    const { onItemSelected, tabOrEnter } = this.props;
+    const { onItemSelected } = this.props;
 
     if (!currentTrigger) return;
     const getTextToReplaceForCurrentTrigger = this._getTextToReplace(
@@ -460,9 +460,9 @@ class ReactTextareaAutocomplete extends React.Component<
       newValue = textToModify.replace(/{{2}\w+$/, newTokenString)
     }
 
-    if(!tabOrEnter){
+    // if(!tabOrEnter){
       newValue = modifiedText;
-    }
+    // }
 
     // set the new textarea value and after that set the caret back to its position
 
@@ -923,6 +923,8 @@ class ReactTextareaAutocomplete extends React.Component<
       onCaretPositionChange(caretPosition);
     }
 
+    console.log('onSelect')
+    console.log(onSelect)
     if (onSelect) {
       e.persist();
       onSelect(e);
@@ -1095,7 +1097,7 @@ class ReactTextareaAutocomplete extends React.Component<
           {...this._cleanUpProps()}
           className={`rta__textarea ${className || ""}`}
           onChange={this._changeHandler}
-          onSelect={this._selectHandler}
+          onSelect={this.tabOrEnter}
           onScroll={this._onScrollHandler}
           onClick={
             // The textarea itself is outside the autoselect dropdown.
