@@ -187,8 +187,21 @@ class App extends React.Component {
           textAreaComponent='input'
           minChar={0}
           value={text}
+          tabOrEnter={true}
           onChange={this._onChangeHandle}
-           trigger={triggers}
+          //  trigger={triggers}
+          trigger={{
+            "{": {
+              dataProvider: (d) => {
+                const filtered = varsData.filter((f) =>
+                    f.name.toLowerCase().startsWith(d)
+                );
+                return filtered;
+            },
+              component: Item,
+              output: (tag) => `{{${tag.name}}}`,
+            }
+          }}
         />
       </div>
     );
