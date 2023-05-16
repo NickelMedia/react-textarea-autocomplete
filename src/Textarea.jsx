@@ -379,11 +379,13 @@ class ReactTextareaAutocomplete extends React.Component<
     const { selectionEnd, currentTrigger, value } = this.state;
     const { onItemSelected } = this.props;
 
+    console.log('_onSelect')
     if (!currentTrigger) return;
     const getTextToReplaceForCurrentTrigger = this._getTextToReplace(
       currentTrigger
     );
 
+    console.log(getTextToReplaceForCurrentTrigger)
     if (!getTextToReplaceForCurrentTrigger) {
       this._closeAutocomplete();
       return;
