@@ -189,7 +189,7 @@ class App extends React.Component {
           value={text}
           tabOrEnter={true}
           onChange={this._onChangeHandle}
-          //  trigger={triggers}
+          // trigger={triggers}
           trigger={{
             "{": {
               dataProvider: (d) => {

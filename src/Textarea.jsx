@@ -263,6 +263,9 @@ class ReactTextareaAutocomplete extends React.Component<
   escListenerInit = () => {
     if (!this.escListener) {
       this.escListener = Listeners.add(KEY_CODES.ESC, this._closeAutocomplete);
+      if(!this.props.tabOrEnter){
+        this.escListener = Listeners.add(KEY_CODES.ENTER, this._closeAutocomplete);
+      }
     }
   };
 
@@ -831,7 +834,7 @@ class ReactTextareaAutocomplete extends React.Component<
         !trigger[this.state.currentTrigger].allowWhitespace) ||
         !this.state.currentTrigger)
     ) {
-      this.props.isOnEnter ? this._closeAutocomplete() : null;
+      this.props.tabOrEnter ? this._closeAutocomplete() : null;
       return;
     }
 
