@@ -213,10 +213,7 @@ class Autocomplete extends React.Component<AutocompleteProps> {
   }
 }
 
-class ReactTextareaAutocomplete extends React.Component<
-  TextareaProps,
-  TextareaState
-> {
+class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaState> {
   static defaultProps = {
     movePopupAsYouType: false,
     value: null,
@@ -1045,7 +1042,7 @@ class ReactTextareaAutocomplete extends React.Component<
   // Last trigger index, to know when user selected the item and we should stop showing the autocomplete
   lastTrigger: number = 0;
 
-  escListener: ?number = null;
+  escListener: number = null;
 
   render() {
     const {
@@ -1156,7 +1153,7 @@ class ReactTextareaAutocomplete extends React.Component<
         )}
       </div>
     );
-  }
+  };
 }
 
 const containerPropCheck = ({ boundariesElement }) => {
