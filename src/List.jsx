@@ -10,6 +10,7 @@ export default class List extends React.Component<ListProps, ListState> {
   state: ListState = {
     selectedItem: null,
     isMounted: false,
+    itemSelected: false
   };
 
   cachedIdOfItems: Map<Object | string, string> = new Map();
@@ -19,9 +20,6 @@ export default class List extends React.Component<ListProps, ListState> {
       Listeners.add([KEY_CODES.DOWN, KEY_CODES.UP], this.scroll), 
       Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter)
     );
-
-    const { values, isOnEnter } = this.props;
-    if (values && values[0] && isOnEnter) this.selectItem(values[0]);
   }
 
   componentDidUpdate({ values: oldValues }: ListProps) {
@@ -47,14 +45,16 @@ export default class List extends React.Component<ListProps, ListState> {
       e.preventDefault();
     }
 
-    const { values } = this.props;
-
-    // if(this.props.isOnEnter) {
+    const { values, tabOrEnter } = this.props;
+    const { itemSelected } = this.state
+    if(tabOrEnter && (e.keyCode === KEY_CODES.ENTER || e.keyCode === KEY_CODES.TAB)){
       this.modifyText(values[this.getPositionInList()]); 
-    // } 
+    } else if (!tabOrEnter && itemSelected ) {
+      this.modifyText(values[this.getPositionInList()]);
+      this.setState({itemSelected: false})
+    }
     
     this.props.onPressEnter();
-
   };
 
   getPositionInList = () => {
@@ -127,6 +127,7 @@ export default class List extends React.Component<ListProps, ListState> {
       onItemHighlighted(item);
 
       if (keyboard) {
+        this.setState({itemSelected: true})
         this.props.dropdownScroll(this.itemsRef[this.getId(item)]);
       }
     });
@@ -136,7 +137,7 @@ export default class List extends React.Component<ListProps, ListState> {
     e.preventDefault();
 
     const { values } = this.props;
-    const { isMounted, isOnEnter } = this.state;
+    const { isMounted } = this.state;
     const code = e.keyCode || e.which;
 
     const oldPosition = this.getPositionInList();
@@ -154,7 +155,7 @@ export default class List extends React.Component<ListProps, ListState> {
         break;
     }
 
-    if(!isMounted && !isOnEnter){
+    if(!isMounted){
       newPosition = 0;
       this.setState({isMounted: !isMounted})
     } else {

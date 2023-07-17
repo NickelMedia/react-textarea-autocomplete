@@ -260,9 +260,9 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
   escListenerInit = () => {
     if (!this.escListener) {
       this.escListener = Listeners.add(KEY_CODES.ESC, this._closeAutocomplete);
-      if(!this.props.tabOrEnter){
-        this.escListener = Listeners.add(KEY_CODES.ENTER, this._closeAutocomplete);
-      }
+      // if(!this.props.tabOrEnter){
+      //   this.escListener = Listeners.add(KEY_CODES.ENTER, this._closeAutocomplete);
+      // }
     }
   };
 
@@ -1135,6 +1135,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
                 onSelect={this._onSelect}
                 dropdownScroll={this._dropdownScroll}
                 onPressEnter={this._closeAutocomplete}
+                tabOrEnter={this.props.tabOrEnter}
               />
             )}
             {dataLoading && (
