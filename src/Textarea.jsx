@@ -426,7 +426,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
       }
     };
 
-    const textareaValue = value.replace(/{{2}$/, '{')
+    const textareaValue = value.replace(/{{2,}$/, '{')
 
     const textToModify = textareaValue.slice(0, selectionEnd);
 
