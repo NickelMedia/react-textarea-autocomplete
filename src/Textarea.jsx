@@ -458,7 +458,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     let newValue = textareaValue.replace(textToModify, modifiedText);
 
     if(textToModify.match(/{{2}\w+$/)){
-      newValue = textToModify.replace(/{{2}\w+$/, newTokenString)
+      newValue = textToModify.replace(/{{2,}\w+$/, newTokenString)
     }
 
     // if(!tabOrEnter){
