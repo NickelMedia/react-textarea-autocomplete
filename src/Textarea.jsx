@@ -155,19 +155,23 @@ class Autocomplete extends React.Component<AutocompleteProps> {
       left +
       dropdownBounds.width;
 
-      if (dropdownRight > containerBounds.right &&
-        textareaBounds.left + left > dropdownBounds.width) {
-        leftPosition = left - dropdownBounds.width;
-        usedClasses.push(POSITION_CONFIGURATION.X.LEFT);
-        unusedClasses.push(POSITION_CONFIGURATION.X.RIGHT);
-      } else {
-        leftPosition = left;
-        usedClasses.push(POSITION_CONFIGURATION.X.RIGHT);
-        unusedClasses.push(POSITION_CONFIGURATION.X.LEFT);
-      }
+    if (
+      dropdownRight > containerBounds.right &&
+      textareaBounds.left + left > dropdownBounds.width
+    ) {
+      leftPosition = left - dropdownBounds.width;
+      usedClasses.push(POSITION_CONFIGURATION.X.LEFT);
+      unusedClasses.push(POSITION_CONFIGURATION.X.RIGHT);
+    } else {
+      leftPosition = left;
+      usedClasses.push(POSITION_CONFIGURATION.X.RIGHT);
+      unusedClasses.push(POSITION_CONFIGURATION.X.LEFT);
+    }
 
-    if (dropdownBottom > containerBounds.bottom && 
-      textareaBounds.top + top > dropdownBounds.height) {
+    if (
+      dropdownBottom > containerBounds.bottom &&
+      textareaBounds.top + top > dropdownBounds.height
+    ) {
       topPosition = top - dropdownBounds.height;
       usedClasses.push(POSITION_CONFIGURATION.Y.TOP);
       unusedClasses.push(POSITION_CONFIGURATION.Y.BOTTOM);
@@ -213,7 +217,10 @@ class Autocomplete extends React.Component<AutocompleteProps> {
   }
 }
 
-class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaState> {
+class ReactTextareaAutocomplete extends React.Component<
+  TextareaProps,
+  TextareaState
+> {
   static defaultProps = {
     movePopupAsYouType: false,
     value: null,
@@ -222,8 +229,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     scrollToItem: true,
     textAreaComponent: "textarea",
     renderToBody: false,
-    tabOrEnter: false
-    
+    tabOrEnter: false,
   };
 
   constructor(props: TextareaProps) {
@@ -286,7 +292,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
 
   componentDidUpdate({ trigger: oldTrigger, value: oldValue }: TextareaProps) {
     const { trigger, value } = this.props;
-    
+
     if (Object.keys(trigger).join("") !== Object.keys(oldTrigger).join("")) {
       this._createRegExp();
     }
@@ -384,7 +390,6 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
       currentTrigger
     );
 
-
     if (!getTextToReplaceForCurrentTrigger) {
       this._closeAutocomplete();
       return;
@@ -426,7 +431,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
       }
     };
 
-    const textareaValue = value.replace(/{{2,}$/, '{')
+    const textareaValue = value.replace(/{{2}$/, "{");
 
     const textToModify = textareaValue.slice(0, selectionEnd);
 
@@ -435,12 +440,11 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
      * This is a ridiculous dark magic, basically we found position of the last current token (from current trigger) and then we replace the text from that position (calculating the offset)
      */
     const escapedCurrentTrigger = escapeRegex(currentTrigger);
-    const triggerOffset = textToModify.length - textToModify.lastIndexOf(currentTrigger);
-    const startOfTokenPosition = textToModify.search(
-      new RegExp(
-          `(?!${escapedCurrentTrigger})$`
-      )
-    ) - triggerOffset;
+    const triggerOffset =
+      textToModify.length - textToModify.lastIndexOf(currentTrigger);
+    const startOfTokenPosition =
+      textToModify.search(new RegExp(`(?!${escapedCurrentTrigger})$`)) -
+      triggerOffset;
 
     // we add space after emoji is selected if a caret position is next
     const newTokenString =
@@ -451,17 +455,17 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
       newTokenString,
       startOfTokenPosition
     );
-    
+
     const modifiedText =
       textToModify.substring(0, startOfTokenPosition) + newTokenString;
 
     let newValue = textareaValue.replace(textToModify, modifiedText);
 
-    if(textToModify.match(/{{2,}\w+$/)){
-      newValue = textToModify.replace(/{{2,}\w+$/, newTokenString)
+    if (textToModify.match(/{{2,}\w+$/)) {
+      newValue = textToModify.replace(/{{2}\w+$/, newTokenString);
     }
     // if(!tabOrEnter){
-      // newValue = modifiedText;
+    // newValue = modifiedText;
     // }
 
     // set the new textarea value and after that set the caret back to its position
@@ -535,7 +539,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
           };
         }
 
-        if (!textToReplace.text && typeof textToReplace.text !== 'string') {
+        if (!textToReplace.text && typeof textToReplace.text !== "string") {
           throw new Error(
             `Output "text" is not defined! Object should has shape {text: string, caretPosition: string | number}. Check the implementation for trigger "${currentTrigger}"\n`
           );
@@ -665,7 +669,6 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
         .map((a) => escapeRegex(a))
         .join("|")})$`
     );
-
   };
 
   /**
@@ -735,7 +738,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
       minChar,
       onCaretPositionChange,
       movePopupAsYouType,
-      tabOrEnter
+      tabOrEnter,
     } = this.props;
     const { top, left } = this.state;
 
@@ -756,14 +759,16 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     if (onChange && event) {
       event.persist && event.persist();
 
-      onChange(new Proxy(event, {
-        get(original, prop, receiver) {
-          if(prop === "target"){
-            return textarea;
-          }
-          return Reflect.get(original, prop, receiver);
-        }
-      }));
+      onChange(
+        new Proxy(event, {
+          get(original, prop, receiver) {
+            if (prop === "target") {
+              return textarea;
+            }
+            return Reflect.get(original, prop, receiver);
+          },
+        })
+      );
     }
 
     if (onCaretPositionChange) {
@@ -772,8 +777,8 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     }
 
     this.setState({
-      value}
-      )
+      value,
+    });
 
     const setTopLeft = () => {
       const { top: newTop, left: newLeft } = getCaretCoordinates(
@@ -796,12 +801,18 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     };
 
     if (selectionEnd <= this.lastTrigger) {
-      const affectedTextareaValue = value.slice(0, !tabOrEnter ? 1 : selectionEnd);
+      const affectedTextareaValue = value.slice(
+        0,
+        !tabOrEnter ? 1 : selectionEnd
+      );
       const newTrigger = this.tokenRegExp.exec(affectedTextareaValue);
       cleanLastTrigger(newTrigger ? newTrigger[0].length : 0);
     }
 
-    const affectedTextareaValue = value.slice(this.lastTrigger, !tabOrEnter ? 1 : selectionEnd);
+    const affectedTextareaValue = value.slice(
+      this.lastTrigger,
+      !tabOrEnter ? 1 : selectionEnd
+    );
 
     let tokenMatch = this.tokenRegExp.exec(affectedTextareaValue);
     let lastToken = tokenMatch && tokenMatch[0];
@@ -812,7 +823,6 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     // with this approach we want to know if the user just inserted a new trigger sequence
     const newTrigger = this.tokenRegExpEnding.exec(affectedTextareaValue);
     if (newTrigger) {
-
       cleanLastTrigger(newTrigger[0].length);
     } else if (!this._isAutocompleteOpen()) {
       this._closeAutocomplete();
@@ -895,9 +905,9 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
     }
 
     this.escListenerInit();
-    
+
     const textToReplace = this._getTextToReplace(currentTrigger);
-    
+
     this.setState(
       {
         selectionEnd,
@@ -983,10 +993,10 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
   _onItemHighlightedHandler = (item: Object | string | null) => {
     const { onItemHighlighted } = this.props;
     const { currentTrigger } = this.state;
-  
+
     if (onItemHighlighted) {
       if (typeof onItemHighlighted === "function") {
-        this.setState({value: item})
+        this.setState({ value: item });
         onItemHighlighted({ currentTrigger, item });
       } else {
         throw new Error("`onItemHighlighted` has to be a function");
@@ -1153,7 +1163,7 @@ class ReactTextareaAutocomplete extends React.Component<TextareaProps, TextareaS
         )}
       </div>
     );
-  };
+  }
 }
 
 const containerPropCheck = ({ boundariesElement }) => {
@@ -1246,7 +1256,7 @@ ReactTextareaAutocomplete.propTypes = {
   renderToBody: PropTypes.bool,
   onItemSelected: PropTypes.func,
   onItemHighlighted: PropTypes.func,
-  tabOrEnter: PropTypes.bool
+  tabOrEnter: PropTypes.bool,
 };
 
 export default ReactTextareaAutocomplete;
