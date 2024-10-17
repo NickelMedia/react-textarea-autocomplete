@@ -22,8 +22,7 @@ export default class Item extends React.Component<ItemProps, *> {
 
   selectItem = () => {
     const { item, onSelectHandler } = this.props;
-      onSelectHandler(item);
-    
+    onSelectHandler(item);
   };
 
   render() {
@@ -35,7 +34,7 @@ export default class Item extends React.Component<ItemProps, *> {
       item,
       selected,
       className,
-      innerRef
+      innerRef,
     } = this.props;
 
     return (
@@ -59,7 +58,7 @@ export default class Item extends React.Component<ItemProps, *> {
             this.clicked = true;
             this.selectItem();
           }}
-          onTouchEnd={e => {
+          onTouchEnd={(e) => {
             e.preventDefault();
             if (this.clicked) {
               onClickHandler(e);
