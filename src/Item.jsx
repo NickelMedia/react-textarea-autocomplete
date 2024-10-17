@@ -30,6 +30,7 @@ export default class Item extends React.Component<ItemProps, *> {
     const {
       component: Component,
       style,
+      onKeyDownHandler,
       onClickHandler,
       item,
       selected,
@@ -51,6 +52,7 @@ export default class Item extends React.Component<ItemProps, *> {
           role="button"
           tabIndex={0}
           onClick={onClickHandler}
+          onKeyDown={onKeyDownHandler}
           onFocus={this.selectItem}
           onMouseEnter={this.selectItem}
           onTouchStart={() => {

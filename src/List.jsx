@@ -10,22 +10,24 @@ export default class List extends React.Component<ListProps, ListState> {
   state: ListState = {
     selectedItem: null,
     isMounted: false,
-    itemSelected: false
+    itemSelected: false,
   };
 
   cachedIdOfItems: Map<Object | string, string> = new Map();
 
   componentDidMount() {
     this.listeners.push(
-      Listeners.add([KEY_CODES.DOWN, KEY_CODES.UP], this.scroll), 
+      Listeners.add([KEY_CODES.DOWN, KEY_CODES.UP], this.scroll),
       Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter)
     );
   }
 
   componentDidUpdate({ values: oldValues }: ListProps) {
     const { values } = this.props;
-    const oldValuesSerialized = oldValues.map(val => this.getId(val)).join("");
-    const newValuesSerialized = values.map(val => this.getId(val)).join("");
+    const oldValuesSerialized = oldValues
+      .map((val) => this.getId(val))
+      .join("");
+    const newValuesSerialized = values.map((val) => this.getId(val)).join("");
 
     if (oldValuesSerialized !== newValuesSerialized && values && values[0]) {
       this.selectItem(values[0]);
@@ -40,20 +42,30 @@ export default class List extends React.Component<ListProps, ListState> {
     }
   }
 
+  onMouseClick = () => {
+    const { values } = this.props;
+    this.modifyText(values[this.getPositionInList()]);
+    this.props.onPressEnter();
+  };
+
   onPressEnter = (e: SyntheticEvent<*>) => {
     if (typeof e !== "undefined") {
       e.preventDefault();
     }
 
     const { values, tabOrEnter } = this.props;
-    const { itemSelected } = this.state
-    if(tabOrEnter && (e.keyCode === KEY_CODES.ENTER || e.keyCode === KEY_CODES.TAB)){
-      this.modifyText(values[this.getPositionInList()]); 
-    } else if (!tabOrEnter && itemSelected ) {
+    const { itemSelected } = this.state;
+
+    if (
+      tabOrEnter &&
+      (e.keyCode === KEY_CODES.ENTER || e.keyCode === KEY_CODES.TAB)
+    ) {
       this.modifyText(values[this.getPositionInList()]);
-      this.setState({itemSelected: false})
+    } else if (!tabOrEnter && itemSelected) {
+      this.modifyText(values[this.getPositionInList()]);
+      this.setState({ itemSelected: false });
     }
-    
+
     this.props.onPressEnter();
   };
 
@@ -63,7 +75,7 @@ export default class List extends React.Component<ListProps, ListState> {
 
     if (!selectedItem) return 0;
 
-    return values.findIndex(a => this.getId(a) === this.getId(selectedItem));
+    return values.findIndex((a) => this.getId(a) === this.getId(selectedItem));
   };
 
   getId = (item: Object | string): string => {
@@ -107,7 +119,7 @@ export default class List extends React.Component<ListProps, ListState> {
   listeners: Array<number> = [];
 
   itemsRef: {
-    [key: string]: HTMLDivElement
+    [key: string]: HTMLDivElement,
   } = {};
 
   modifyText = (value: Object | string) => {
@@ -122,12 +134,11 @@ export default class List extends React.Component<ListProps, ListState> {
 
     if (this.state.selectedItem === item) return;
     this.setState({ selectedItem: item }, () => {
-
       // this.modifyText(item)
       onItemHighlighted(item);
 
       if (keyboard) {
-        this.setState({itemSelected: true})
+        this.setState({ itemSelected: true });
         this.props.dropdownScroll(this.itemsRef[this.getId(item)]);
       }
     });
@@ -155,12 +166,12 @@ export default class List extends React.Component<ListProps, ListState> {
         break;
     }
 
-    if(!isMounted){
+    if (!isMounted) {
       newPosition = 0;
-      this.setState({isMounted: !isMounted})
+      this.setState({ isMounted: !isMounted });
     } else {
       newPosition =
-      ((newPosition % values.length) + values.length) % values.length; // eslint-disable-line
+        ((newPosition % values.length) + values.length) % values.length; // eslint-disable-line
     }
 
     this.selectItem(
@@ -184,22 +195,23 @@ export default class List extends React.Component<ListProps, ListState> {
       style,
       itemClassName,
       className,
-      itemStyle
+      itemStyle,
     } = this.props;
 
     return (
       <ul className={`rta__list ${className || ""}`} style={style}>
-        {values.map(item => (
+        {values.map((item) => (
           <Item
             key={this.getId(item)}
-            innerRef={ref => {
+            innerRef={(ref) => {
               this.itemsRef[this.getId(item)] = ref;
             }}
             selected={this.isSelected(item)}
             item={item}
             className={itemClassName}
             style={itemStyle}
-            onClickHandler={this.onPressEnter}
+            onClickHandler={this.onMouseClick}
+            onKeyDownHandler={this.onPressEnter}
             onSelectHandler={this.selectItem}
             component={component}
           />
