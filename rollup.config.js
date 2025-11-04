@@ -1,10 +1,16 @@
-import resolve from "rollup-plugin-node-resolve";
-import babel from "rollup-plugin-babel";
-import commonjs from "rollup-plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
+import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 import license from "rollup-plugin-license";
-import { uglify } from "rollup-plugin-uglify";
+import terser from "@rollup/plugin-terser";
 import path from "path";
-import pkg from "./package.json";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const pkg = JSON.parse(readFileSync("./package.json", "utf-8"));
 
 process.env.NODE_ENV = "production";
 
@@ -20,14 +26,15 @@ const createConfig = ({ umd = false, output } = {}) => ({
    */
   onwarn: () => null,
   plugins: [
-    babel({ runtimeHelpers: true }),
+    babel({ 
+      babelHelpers: 'runtime',
+      exclude: 'node_modules/**'
+    }),
     resolve(),
     commonjs({ extensions: [".js", ".jsx"] }),
-    umd && uglify(),
+    umd && terser(),
     license({
-      banner: {
-        file: path.join(__dirname, "LICENSE")
-      }
+      banner: readFileSync(path.join(__dirname, "LICENSE"), "utf-8")
     })
   ].filter(Boolean)
 });
