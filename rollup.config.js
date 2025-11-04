@@ -32,7 +32,9 @@ const createConfig = ({ umd = false, output } = {}) => ({
     }),
     resolve(),
     commonjs({ extensions: [".js", ".jsx"] }),
-    umd && terser(),
+    umd && terser({
+      maxWorkers: 1
+    }),
     license({
       banner: readFileSync(path.join(__dirname, "LICENSE"), "utf-8")
     })
