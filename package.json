@@ -40,7 +40,7 @@
     "flow:check": "flow check",
     "cypress": "yarn run example & wait-on http://localhost:8080 && cypress run --headed",
     "cypress:open": "cypress open",
-    "deploy": "npx np --no-tests --any-branch --message=v%s",
+    "deploy": "npx np --no-tests --any-branch",
     "release": "npm run lint && npm run build && npm run deploy"
   },
   "devDependencies": {
