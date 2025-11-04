@@ -5,12 +5,12 @@ export type caretPositionType = "start" | "end" | "next" | number;
 export type textToReplaceType = ?{|
   text: string,
   caretPosition: caretPositionType,
-  key?: ?string
+  key?: ?string,
 |};
 
 export type outputType = (Object | string, ?string) => ?textToReplaceType;
 
-export type dataProviderType = string =>
+export type dataProviderType = (string) =>
   | Promise<Array<Object | string>>
   | Array<Object | string>;
 
@@ -25,7 +25,7 @@ export type ItemProps = {
   className: ?string,
   onClickHandler: (SyntheticEvent<*>) => void,
   selected: boolean,
-  innerRef: HTMLDivElement => mixed
+  innerRef: (HTMLDivElement) => mixed,
 };
 
 export type ListProps = {
@@ -36,10 +36,10 @@ export type ListProps = {
   itemStyle: ?Object,
   className: ?string,
   itemClassName: ?string,
-  onItemHighlighted: (Object | string ) => void,
+  onItemHighlighted: (Object | string) => void,
   onSelect: (Object | string) => void,
-  dropdownScroll: HTMLDivElement => void,
-  isOnEnter: ?boolean
+  dropdownScroll: (HTMLDivElement) => void,
+  isOnEnter: ?boolean,
 };
 
 /**
@@ -47,7 +47,7 @@ export type ListProps = {
  */
 export type ListState = {
   selectedItem: ?Object | ?string,
-  isMounted: ?boolean
+  isMounted: ?boolean,
 };
 
 /**
@@ -58,11 +58,11 @@ export type settingType = {|
   dataProvider: dataProviderType,
   allowWhitespace?: boolean,
   afterWhitespace?: boolean,
-  output?: (Object | string, ?string) => textToReplaceType | string
+  output?: (Object | string, ?string) => textToReplaceType | string,
 |};
 
 export type triggerType = {
-  [string]: settingType
+  [string]: settingType,
 };
 
 export type TextareaProps = {
@@ -70,7 +70,7 @@ export type TextareaProps = {
   loadingComponent: React$StatelessFunctionalComponent<*>,
   textAreaComponent: {
     component: React$StatelessFunctionalComponent<*>,
-    ref: "string"
+    ref: "string",
   },
   onChange: ?(SyntheticEvent<*> | Event) => void,
   onSelect: ?(SyntheticEvent<*> | Event) => void,
@@ -82,7 +82,10 @@ export type TextareaProps = {
     | boolean
     | ((container: HTMLDivElement, item: HTMLDivElement) => void),
   closeOnClickOutside?: boolean,
-  onItemHighlighted?: ({ currentTrigger: ?string, item: ?Object | ?string }) => void,
+  onItemHighlighted?: ({
+    currentTrigger: ?string,
+    item: ?Object | ?string,
+  }) => void,
   onItemSelected?: ({ currentTrigger: string, item: Object | string }) => void,
   movePopupAsYouType?: boolean,
   boundariesElement: string | HTMLElement,
@@ -114,5 +117,5 @@ export type TextareaState = {
   dataLoading: boolean,
   selectionEnd: number,
   component: ?React$StatelessFunctionalComponent<*>,
-  textToReplace: ?outputType
+  textToReplace: ?outputType,
 };

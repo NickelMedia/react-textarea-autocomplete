@@ -37,7 +37,7 @@ const POSITION_CONFIGURATION = {
 const errorMessage = (message: string) =>
   console.error(
     `RTA: dataProvider fails: ${message}
-    \nCheck the documentation or create issue if you think it's bug. https://github.com/webscopeio/react-textarea-autocomplete/issues`
+    \nCheck the documentation or create issue if you think it's bug. https://github.com/webscopeio/react-textarea-autocomplete/issues`,
   );
 
 const reservedRegexChars = [
@@ -61,7 +61,7 @@ const reservedRegexChars = [
 const escapeRegex = (text) =>
   [...text]
     .map((character) =>
-      reservedRegexChars.includes(character) ? `\\${character}` : character
+      reservedRegexChars.includes(character) ? `\\${character}` : character,
     )
     .join("");
 
@@ -90,7 +90,7 @@ class Autocomplete extends React.Component<AutocompleteProps> {
       const elem = document.querySelector(boundariesElement);
       if (!elem) {
         throw new Error(
-          "RTA: Invalid prop boundariesElement: it has to be string or HTMLElement."
+          "RTA: Invalid prop boundariesElement: it has to be string or HTMLElement.",
         );
       }
       this.containerElem = elem;
@@ -98,14 +98,14 @@ class Autocomplete extends React.Component<AutocompleteProps> {
       this.containerElem = boundariesElement;
     } else {
       throw new Error(
-        "RTA: Invalid prop boundariesElement: it has to be string or HTMLElement."
+        "RTA: Invalid prop boundariesElement: it has to be string or HTMLElement.",
       );
     }
 
     if (!this.containerElem || !this.containerElem.contains(this.ref)) {
       if (process.env.NODE_ENV !== "test") {
         throw new Error(
-          "RTA: Invalid prop boundariesElement: it has to be one of the parents of the RTA."
+          "RTA: Invalid prop boundariesElement: it has to be one of the parents of the RTA.",
         );
       }
     }
@@ -127,19 +127,19 @@ class Autocomplete extends React.Component<AutocompleteProps> {
 
     const marginTop = parseInt(
       computedStyle.getPropertyValue("margin-top"),
-      10
+      10,
     );
     const marginBottom = parseInt(
       computedStyle.getPropertyValue("margin-bottom"),
-      10
+      10,
     );
     const marginLeft = parseInt(
       computedStyle.getPropertyValue("margin-left"),
-      10
+      10,
     );
     const marginRight = parseInt(
       computedStyle.getPropertyValue("margin-right"),
-      10
+      10,
     );
 
     const dropdownBottom =
@@ -219,7 +219,7 @@ class Autocomplete extends React.Component<AutocompleteProps> {
 
 class ReactTextareaAutocomplete extends React.Component<
   TextareaProps,
-  TextareaState
+  TextareaState,
 > {
   static defaultProps = {
     movePopupAsYouType: false,
@@ -386,9 +386,8 @@ class ReactTextareaAutocomplete extends React.Component<
     const { onItemSelected } = this.props;
 
     if (!currentTrigger) return;
-    const getTextToReplaceForCurrentTrigger = this._getTextToReplace(
-      currentTrigger
-    );
+    const getTextToReplaceForCurrentTrigger =
+      this._getTextToReplace(currentTrigger);
 
     if (!getTextToReplaceForCurrentTrigger) {
       this._closeAutocomplete();
@@ -412,7 +411,7 @@ class ReactTextareaAutocomplete extends React.Component<
     const computeCaretPosition = (
       position: caretPositionType,
       token: string,
-      startToken: number
+      startToken: number,
     ): number => {
       switch (position) {
         case "start":
@@ -423,7 +422,7 @@ class ReactTextareaAutocomplete extends React.Component<
         default:
           if (!Number.isInteger(position)) {
             throw new Error(
-              'RTA: caretPosition should be "start", "next", "end" or number.'
+              'RTA: caretPosition should be "start", "next", "end" or number.',
             );
           }
 
@@ -453,7 +452,7 @@ class ReactTextareaAutocomplete extends React.Component<
     const newCaretPosition = computeCaretPosition(
       newToken.caretPosition,
       newTokenString,
-      startOfTokenPosition
+      startOfTokenPosition,
     );
 
     const modifiedText =
@@ -498,7 +497,7 @@ class ReactTextareaAutocomplete extends React.Component<
         if (window.chrome) {
           this.textareaRef.scrollTop = scrollTop;
         }
-      }
+      },
     );
   };
 
@@ -515,7 +514,7 @@ class ReactTextareaAutocomplete extends React.Component<
         (!output || typeof output !== "function")
       ) {
         throw new Error(
-          'Output functor is not defined! If you are using items as object you have to define "output" function. https://github.com/webscopeio/react-textarea-autocomplete#trigger-type'
+          'Output functor is not defined! If you are using items as object you have to define "output" function. https://github.com/webscopeio/react-textarea-autocomplete#trigger-type',
         );
       }
 
@@ -525,8 +524,8 @@ class ReactTextareaAutocomplete extends React.Component<
         if (textToReplace === undefined || typeof textToReplace === "number") {
           throw new Error(
             `Output functor should return string or object in shape {text: string, caretPosition: string | number}.\nGot "${String(
-              textToReplace
-            )}". Check the implementation for trigger "${currentTrigger}"\n\nSee https://github.com/webscopeio/react-textarea-autocomplete#trigger-type for more information.\n`
+              textToReplace,
+            )}". Check the implementation for trigger "${currentTrigger}"\n\nSee https://github.com/webscopeio/react-textarea-autocomplete#trigger-type for more information.\n`,
           );
         }
 
@@ -541,13 +540,13 @@ class ReactTextareaAutocomplete extends React.Component<
 
         if (!textToReplace.text && typeof textToReplace.text !== "string") {
           throw new Error(
-            `Output "text" is not defined! Object should has shape {text: string, caretPosition: string | number}. Check the implementation for trigger "${currentTrigger}"\n`
+            `Output "text" is not defined! Object should has shape {text: string, caretPosition: string | number}. Check the implementation for trigger "${currentTrigger}"\n`,
           );
         }
 
         if (!textToReplace.caretPosition) {
           throw new Error(
-            `Output "caretPosition" is not defined! Object should has shape {text: string, caretPosition: string | number}. Check the implementation for trigger "${currentTrigger}"\n`
+            `Output "caretPosition" is not defined! Object should has shape {text: string, caretPosition: string | number}. Check the implementation for trigger "${currentTrigger}"\n`,
           );
         }
 
@@ -651,7 +650,7 @@ class ReactTextareaAutocomplete extends React.Component<
           return 0;
         })
         .map((a) => escapeRegex(a))
-        .join("|")})((?:(?!\\1)[^\\s])*$)`
+        .join("|")})((?:(?!\\1)[^\\s])*$)`,
     );
 
     this.tokenRegExpEnding = new RegExp(
@@ -667,7 +666,7 @@ class ReactTextareaAutocomplete extends React.Component<
           return 0;
         })
         .map((a) => escapeRegex(a))
-        .join("|")})$`
+        .join("|")})$`,
     );
   };
 
@@ -685,7 +684,7 @@ class ReactTextareaAutocomplete extends React.Component<
       },
       () => {
         if (currentTrigger) this._onItemHighlightedHandler(null);
-      }
+      },
     );
   };
 
@@ -767,7 +766,7 @@ class ReactTextareaAutocomplete extends React.Component<
             }
             return Reflect.get(original, prop, receiver);
           },
-        })
+        }),
       );
     }
 
@@ -783,7 +782,7 @@ class ReactTextareaAutocomplete extends React.Component<
     const setTopLeft = () => {
       const { top: newTop, left: newLeft } = getCaretCoordinates(
         textarea,
-        selectionEnd
+        selectionEnd,
       );
 
       this.setState({
@@ -803,7 +802,7 @@ class ReactTextareaAutocomplete extends React.Component<
     if (selectionEnd <= this.lastTrigger) {
       const affectedTextareaValue = value.slice(
         0,
-        !tabOrEnter ? 1 : selectionEnd
+        !tabOrEnter ? 1 : selectionEnd,
       );
       const newTrigger = this.tokenRegExp.exec(affectedTextareaValue);
       cleanLastTrigger(newTrigger ? newTrigger[0].length : 0);
@@ -811,7 +810,7 @@ class ReactTextareaAutocomplete extends React.Component<
 
     const affectedTextareaValue = value.slice(
       this.lastTrigger,
-      !tabOrEnter ? 1 : selectionEnd
+      !tabOrEnter ? 1 : selectionEnd,
     );
 
     let tokenMatch = this.tokenRegExp.exec(affectedTextareaValue);
@@ -871,7 +870,7 @@ class ReactTextareaAutocomplete extends React.Component<
       trigger[this.state.currentTrigger].allowWhitespace
     ) {
       tokenMatch = new RegExp(
-        `${escapeRegex(this.state.currentTrigger)}.*$`
+        `${escapeRegex(this.state.currentTrigger)}.*$`,
       ).exec(value.slice(0, selectionEnd));
       lastToken = tokenMatch && tokenMatch[0];
 
@@ -884,7 +883,7 @@ class ReactTextareaAutocomplete extends React.Component<
         Object.keys(trigger).find(
           (a) =>
             a.slice(0, currentTriggerLength + 1) ===
-            lastToken.slice(0, currentTriggerLength + 1)
+            lastToken.slice(0, currentTriggerLength + 1),
         ) || null;
     }
 
@@ -921,7 +920,7 @@ class ReactTextareaAutocomplete extends React.Component<
         } catch (err) {
           errorMessage(err.message);
         }
-      }
+      },
     );
   };
 
@@ -1016,7 +1015,7 @@ class ReactTextareaAutocomplete extends React.Component<
 
     if (typeof scrollToItem !== "function" || scrollToItem.length !== 2) {
       throw new Error(
-        "`scrollToItem` has to be boolean (true for default implementation) or function with two parameters: container, item."
+        "`scrollToItem` has to be boolean (true for default implementation) or function with two parameters: container, item.",
       );
     }
 
@@ -1073,14 +1072,8 @@ class ReactTextareaAutocomplete extends React.Component<
       textAreaComponent,
       renderToBody,
     } = this.props;
-    const {
-      left,
-      top,
-      dataLoading,
-      component,
-      value,
-      textToReplace,
-    } = this.state;
+    const { left, top, dataLoading, component, value, textToReplace } =
+      this.state;
 
     const isAutocompleteOpen = this._isAutocompleteOpen();
     const suggestionData = this._getSuggestions();
@@ -1174,7 +1167,7 @@ const containerPropCheck = ({ boundariesElement }) => {
     !(boundariesElement instanceof HTMLElement)
   ) {
     return Error(
-      "Invalid prop boundariesElement: it has to be string or HTMLElement."
+      "Invalid prop boundariesElement: it has to be string or HTMLElement.",
     );
   }
 
@@ -1191,7 +1184,7 @@ const triggerPropsCheck = ({ trigger }: { trigger: triggerType }) => {
 
     if (typeof triggerChar !== "string") {
       return Error(
-        "Invalid prop trigger. Keys of the object has to be string."
+        "Invalid prop trigger. Keys of the object has to be string.",
       );
     }
 
@@ -1220,7 +1213,7 @@ const triggerPropsCheck = ({ trigger }: { trigger: triggerType }) => {
 
     if (afterWhitespace && allowWhitespace) {
       return Error(
-        "Invalid prop trigger: afterWhitespace and allowWhitespace can be used together"
+        "Invalid prop trigger: afterWhitespace and allowWhitespace can be used together",
       );
     }
   }

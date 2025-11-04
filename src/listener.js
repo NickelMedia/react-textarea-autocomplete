@@ -7,7 +7,7 @@ export const KEY_CODES = {
   LEFT: 37,
   RIGHT: 39,
   ENTER: 13,
-  TAB: 9
+  TAB: 9,
 };
 
 // This is self-made key shortcuts manager, used for caching key strokes
@@ -15,7 +15,7 @@ class Listener {
   index: number;
 
   listeners: {
-    [number]: {| keyCode: Array<number>, fn: Function |}
+    [number]: {| keyCode: Array<number>, fn: Function |},
   };
 
   refCount: number;
@@ -59,7 +59,7 @@ class Listener {
 
     this.listeners[this.index] = {
       keyCode,
-      fn
+      fn,
     };
 
     return this.index++;

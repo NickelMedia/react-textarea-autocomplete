@@ -18,7 +18,7 @@ export default class List extends React.Component<ListProps, ListState> {
   componentDidMount() {
     this.listeners.push(
       Listeners.add([KEY_CODES.DOWN, KEY_CODES.UP], this.scroll),
-      Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter)
+      Listeners.add([KEY_CODES.ENTER, KEY_CODES.TAB], this.onPressEnter),
     );
   }
 
@@ -99,7 +99,7 @@ export default class List extends React.Component<ListProps, ListState> {
 
       if (!item.key) {
         throw new Error(
-          `Item ${JSON.stringify(item)} has to have defined "key" property`
+          `Item ${JSON.stringify(item)} has to have defined "key" property`,
         );
       }
 
@@ -176,7 +176,7 @@ export default class List extends React.Component<ListProps, ListState> {
 
     this.selectItem(
       values[newPosition],
-      [KEY_CODES.DOWN, KEY_CODES.UP].includes(code)
+      [KEY_CODES.DOWN, KEY_CODES.UP].includes(code),
     );
   };
 
@@ -189,14 +189,8 @@ export default class List extends React.Component<ListProps, ListState> {
   };
 
   render() {
-    const {
-      values,
-      component,
-      style,
-      itemClassName,
-      className,
-      itemStyle,
-    } = this.props;
+    const { values, component, style, itemClassName, className, itemStyle } =
+      this.props;
 
     return (
       <ul className={`rta__list ${className || ""}`} style={style}>

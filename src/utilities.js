@@ -2,11 +2,11 @@
 
 export function defaultScrollToItem(
   container: HTMLDivElement,
-  item: HTMLDivElement
+  item: HTMLDivElement,
 ) {
   const itemHeight = parseInt(
     getComputedStyle(item).getPropertyValue("height"),
-    10
+    10,
   );
 
   const containerHight =
